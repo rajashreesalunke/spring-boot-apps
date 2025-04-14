@@ -1,0 +1,33 @@
+version: "3.7"
+
+services:
+  app:
+    build: .
+    ports:
+      - "8090:8090"
+    networks:
+      - s-network
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_DATASOURCE_USERNAME: rajashree
+      SPRING_DATASOURCE_PASSWORD: "1234"
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: rajashree
+      POSTGRES_PASSWORD: "1234"
+      POSTGRES_DB: postgres
+    ports:
+      - "5433:5432"
+    networks:
+      - s-network
+    volumes:
+      - postgres-s-data:/var/lib/postgresql/data
+networks:
+  s-network:
+    driver: bridge
+volumes:
+  postgres-s-data:
